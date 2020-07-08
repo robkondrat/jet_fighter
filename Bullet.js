@@ -6,12 +6,15 @@ class Bullet {
     this.isWhite = isWhite;
     this.speed = 2;
     this.r = 1.5;
+    console.log(this.angle);
+    this.timeAlive = 0;
   }
 
   update() {
     this.x += this.speed * cos(this.angle);
     this.y += this.speed * sin(this.angle);
     this.constrainToMap();
+    this.timeAlive++;
   }
 
   constrainToMap() {

@@ -1,5 +1,5 @@
 class Jet {
-  constructor(image) {
+  constructor(image, isWhite) {
     this.x = random(width);
     this.y = random(height);
     this.image = image;
@@ -57,9 +57,13 @@ class Jet {
   }
 
   drawBullets() {
-    for (let bullet of this.bullets) {
-      bullet.update();
-      bullet.draw();
+    for (let i = this.bullets.length - 1; i >= 0; i--) {
+      this.bullets[i].update();
+      this.bullets[i].draw();
+
+      if (this.bullets[i].timeAlive > 200) {
+        this.bullets.splice(i, 1);
+      }
     }
   }
 }
