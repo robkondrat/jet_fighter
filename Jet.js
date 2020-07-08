@@ -8,6 +8,9 @@ class Jet {
     this.speed = 0.7;
 
     this.rotateAmount = 0;
+
+    this.bullets = [];
+    this.isWhite = isWhite;
   }
 
   update() {
@@ -36,6 +39,11 @@ class Jet {
     }
   }
 
+  shoot() {
+    let bullet = new Bullet(this.x, this.y, this.angle, this.isWhite);
+    this.bullets.push(bullet);
+  }
+
   draw() {
     push();
     translate(this.x, this.y);
@@ -44,5 +52,14 @@ class Jet {
 
     image(this.image, 0, 0);
     pop();
+
+    this.drawBullets();
+  }
+
+  drawBullets() {
+    for (let bullet of this.bullets) {
+      bullet.update();
+      bullet.draw();
+    }
   }
 }
