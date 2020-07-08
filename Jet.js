@@ -3,11 +3,18 @@ class Jet {
     this.x = random(width);
     this.y = random(height);
     this.image = image;
+
+    this.angle = 0;
+    this.speed = 0.7;
+
+    this.rotateAmount = 0;
   }
 
   update() {
     this.goTheWayWereFacing();
     this.constrainToMap();
+
+    this.angle += this.rotateAmount;
   }
 
   goTheWayWereFacing() {
