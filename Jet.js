@@ -1,69 +1,91 @@
 class Jet {
+
   constructor(image, isWhite) {
     this.x = random(width);
     this.y = random(height);
     this.image = image;
-
+    
     this.angle = 0;
     this.speed = 0.7;
-
+    
+    
     this.rotateAmount = 0;
-
+    
     this.bullets = [];
     this.isWhite = isWhite;
+    this.score = 0;
   }
+  
 
-  update() {
+  update(enemyPlayer) {
     this.goTheWayWereFacing();
     this.constrainToMap();
+    
 
     this.angle += this.rotateAmount;
-  }
 
-  goTheWayWereFacing() {
-    this.x += this.speed * sin(this.angle);
-    this.y += this.speed * cos(this.angle);
+    this.processBeingHitByBullet(enemyPlayer);
   }
+  
+  processBeingHitByBullet(enemyPlayer) {
+  
+    let enemyBullets = enemyPlayer.bullets;
+    for (let i = enemyBullets.length - 1; i >= 0; i--) {
+      if (dist(this.x, this.y, enemyBullets[i].x, enemyBullets[i].y) < (10 + enemyBullets[i].r)){ 
+        enemyBullets.splice(i, 1);
+        enemyPlayer.score++;
+      }
+    }
+  }
+  
+  goTheWayWereFacing() {
+    this.x += this.speed * cos(this.angle);
+    this.y += this.speed * sin(this.angle);
+  }
+  
 
   constrainToMap() {
     if (this.x < -this.image.width) {
       this.x = width;
     } else if (this.x > width) {
       this.x = 0;
-    }
-
+    } 
+    
     if (this.y > height) {
       this.y = 0;
     } else if (this.y < -this.image.height) {
       this.y = height;
     }
   }
-
+  
+  
   shoot() {
     let bullet = new Bullet(this.x, this.y, this.angle, this.isWhite);
     this.bullets.push(bullet);
   }
-
+  
   draw() {
     push();
     translate(this.x, this.y);
     imageMode(CENTER);
     rotate(this.angle + HALF_PI);
-
     image(this.image, 0, 0);
     pop();
-
+    
     this.drawBullets();
   }
-
+  
   drawBullets() {
+    
     for (let i = this.bullets.length - 1; i >= 0; i--) {
       this.bullets[i].update();
-      this.bullets[i].draw();
-
+      this.bullets[i].draw(); 
+      
       if (this.bullets[i].timeAlive > 200) {
         this.bullets.splice(i, 1);
       }
     }
+    
   }
+  
 }
